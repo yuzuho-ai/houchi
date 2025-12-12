@@ -2,70 +2,74 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <title>放置クエスト</title>
+    <meta name="theme-color" content="#1a1a2e">
+    <title>美少女バトルRPG</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
+        <!-- ヘッダー -->
         <header class="game-header">
-            <h1>⚔️ 放置クエスト</h1>
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-icon">💰</span>
-                    <span id="gold" class="stat-value">0</span>
+            <div class="header-left">
+                <span class="game-title">💖 美少女バトル</span>
+            </div>
+            <div class="header-right">
+                <div class="currency">
+                    <span class="currency-icon">💰</span>
+                    <span id="gold-display">0</span>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-icon">⚡</span>
-                    <span id="gold-per-sec" class="stat-value">0</span>
-                    <span class="stat-label">/秒</span>
+                <div class="currency">
+                    <span class="currency-icon">💎</span>
+                    <span id="gems-display">0</span>
                 </div>
             </div>
         </header>
 
+        <!-- メインコンテンツ -->
         <main class="game-main">
-            <section class="hero-section">
-                <div class="hero-container" id="hero-container">
-                    <div class="hero" id="hero">🧙‍♂️</div>
-                    <div class="enemy" id="enemy">👹</div>
-                </div>
-                <div class="battle-info">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="battle-progress"></div>
-                    </div>
-                    <p id="battle-text">戦闘中...</p>
-                </div>
-            </section>
+            <!-- バトル画面 -->
+            <div id="battle-screen" class="screen active">
+                <!-- JSで描画 -->
+            </div>
 
-            <section class="upgrades-section">
-                <h2>🛒 アップグレード</h2>
-                <div class="upgrades-list" id="upgrades-list">
-                    <!-- アップグレードがJSで追加される -->
-                </div>
-            </section>
+            <!-- パーティ画面 -->
+            <div id="party-screen" class="screen">
+                <!-- JSで描画 -->
+            </div>
 
-            <section class="achievements-section">
-                <h2>🏆 実績</h2>
-                <div class="achievements-list" id="achievements-list">
-                    <!-- 実績がJSで追加される -->
-                </div>
-            </section>
+            <!-- ガチャ画面 -->
+            <div id="gacha-screen" class="screen">
+                <!-- JSで描画 -->
+            </div>
+
+            <!-- 装備画面 -->
+            <div id="inventory-screen" class="screen">
+                <!-- JSで描画 -->
+            </div>
         </main>
 
-        <footer class="game-footer">
-            <button id="save-btn" class="footer-btn">💾 保存</button>
-            <button id="reset-btn" class="footer-btn danger">🗑️ リセット</button>
-        </footer>
-
-        <div class="offline-bonus" id="offline-bonus" style="display: none;">
-            <div class="offline-content">
-                <h2>おかえりなさい！</h2>
-                <p>放置中に <span id="offline-gold">0</span> ゴールド獲得しました！</p>
-                <button id="claim-bonus">受け取る</button>
-            </div>
-        </div>
+        <!-- ナビゲーション -->
+        <nav class="game-nav">
+            <button class="nav-btn active" data-screen="battle">
+                <span class="nav-icon">⚔️</span>
+                <span class="nav-label">バトル</span>
+            </button>
+            <button class="nav-btn" data-screen="party">
+                <span class="nav-icon">👥</span>
+                <span class="nav-label">パーティ</span>
+            </button>
+            <button class="nav-btn" data-screen="gacha">
+                <span class="nav-icon">🎰</span>
+                <span class="nav-label">ガチャ</span>
+            </button>
+            <button class="nav-btn" data-screen="inventory">
+                <span class="nav-icon">🎒</span>
+                <span class="nav-label">装備</span>
+            </button>
+        </nav>
     </div>
 
     <script src="game.js"></script>

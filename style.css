@@ -5,407 +5,954 @@
 }
 
 :root {
-    --primary-color: #6366f1;
-    --secondary-color: #8b5cf6;
-    --success-color: #22c55e;
-    --danger-color: #ef4444;
-    --warning-color: #f59e0b;
-    --bg-color: #0f172a;
-    --card-bg: #1e293b;
-    --text-color: #f1f5f9;
-    --text-muted: #94a3b8;
+    --primary: #ff6b9d;
+    --primary-dark: #e91e63;
+    --secondary: #7c4dff;
+    --accent: #ffd54f;
+    --success: #4caf50;
+    --danger: #f44336;
+    --bg-dark: #1a1a2e;
+    --bg-card: #16213e;
+    --bg-lighter: #1f3460;
+    --text: #ffffff;
+    --text-muted: #a0a0b0;
+    --border-radius: 12px;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, var(--bg-color) 0%, #1a1a2e 100%);
-    color: var(--text-color);
-    min-height: 100vh;
-    overflow-x: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+    background: linear-gradient(135deg, var(--bg-dark) 0%, #0f0f23 100%);
+    color: var(--text);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
 .game-container {
     max-width: 500px;
     margin: 0 auto;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 /* ヘッダー */
 .game-header {
-    background: var(--card-bg);
-    padding: 1rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    border-bottom: 2px solid var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border-bottom: 2px solid var(--primary);
+    flex-shrink: 0;
 }
 
-.game-header h1 {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+.game-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-.stats {
+.header-right {
     display: flex;
-    justify-content: center;
-    gap: 2rem;
+    gap: 16px;
 }
 
-.stat-item {
+.currency {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-}
-
-.stat-icon {
-    font-size: 1.25rem;
-}
-
-.stat-value {
-    font-size: 1.25rem;
+    gap: 4px;
     font-weight: bold;
-    color: var(--warning-color);
 }
 
-.stat-label {
-    font-size: 0.875rem;
-    color: var(--text-muted);
+.currency-icon {
+    font-size: 1rem;
 }
 
 /* メインコンテンツ */
 .game-main {
     flex: 1;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* ヒーローセクション */
-.hero-section {
-    background: var(--card-bg);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    text-align: center;
+.screen {
+    display: none;
+    padding: 16px;
+    min-height: 100%;
 }
 
-.hero-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 1rem;
-    min-height: 100px;
+.screen.active {
+    display: block;
 }
 
-.hero, .enemy {
-    font-size: 4rem;
-    transition: transform 0.3s ease;
+.screen h2 {
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary);
 }
 
-.hero.attacking {
-    animation: attack-right 0.5s ease;
-}
-
-.enemy.hit {
-    animation: shake 0.3s ease;
-}
-
-.enemy.dead {
-    opacity: 0.3;
-    transform: rotate(90deg) scale(0.8);
-}
-
-@keyframes attack-right {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(50px); }
-}
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
-}
-
-.battle-info {
-    margin-top: 1rem;
-}
-
-.progress-bar {
-    height: 1rem;
-    background: #334155;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    margin-bottom: 0.5rem;
-}
-
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    width: 0%;
-    transition: width 0.1s linear;
-}
-
-#battle-text {
+.screen h3 {
+    font-size: 1rem;
+    margin: 16px 0 12px;
     color: var(--text-muted);
-    font-size: 0.875rem;
 }
 
-/* アップグレードセクション */
-.upgrades-section, .achievements-section {
-    background: var(--card-bg);
-    border-radius: 1rem;
-    padding: 1rem;
+/* ナビゲーション */
+.game-nav {
+    display: flex;
+    background: var(--bg-card);
+    border-top: 2px solid var(--primary);
+    flex-shrink: 0;
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
-.upgrades-section h2, .achievements-section h2 {
-    font-size: 1.125rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #334155;
-}
-
-.upgrades-list {
+.nav-btn {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    align-items: center;
+    padding: 10px 8px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.upgrade-item {
+.nav-btn.active {
+    color: var(--primary);
+}
+
+.nav-btn:active {
+    transform: scale(0.95);
+}
+
+.nav-icon {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+}
+
+.nav-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+/* ボタン共通 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+/* バトル画面 */
+.battle-header {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.stage-info {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.battle-arena {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #334155;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    transition: all 0.2s ease;
+    gap: 8px;
+    margin-bottom: 16px;
+    min-height: 180px;
 }
 
-.upgrade-item:active {
-    transform: scale(0.98);
-}
-
-.upgrade-info {
+.party-side {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.upgrade-name {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
+.party-member {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border-left: 3px solid;
 }
 
-.upgrade-desc {
+.member-avatar {
+    font-size: 1.8rem;
+}
+
+.member-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.member-name {
+    font-size: 0.75rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hp-bar {
+    height: 6px;
+    background: #333;
+    border-radius: 3px;
+    margin-top: 4px;
+    overflow: hidden;
+}
+
+.hp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4caf50, #8bc34a);
+    transition: width 0.3s;
+}
+
+.hp-fill.enemy {
+    background: linear-gradient(90deg, #f44336, #ff5722);
+}
+
+.vs-divider {
+    font-size: 2rem;
+    padding: 0 8px;
+}
+
+.enemy-side {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.enemy-container {
+    text-align: center;
+    padding: 16px;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    min-width: 120px;
+}
+
+.enemy-avatar {
+    font-size: 4rem;
+    animation: enemy-idle 2s ease-in-out infinite;
+}
+
+.enemy-avatar.defeated {
+    filter: grayscale(1);
+    opacity: 0.5;
+    animation: none;
+}
+
+@keyframes enemy-idle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.enemy-name {
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+.enemy-hp-bar {
+    height: 10px;
+    background: #333;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.enemy-hp-text {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.no-party, .no-enemy {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+}
+
+.battle-log {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    padding: 12px;
+    margin-bottom: 16px;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.log-entry {
+    font-size: 0.8rem;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.battle-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.auto-battle-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.auto-battle-toggle input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary);
+}
+
+/* パーティ画面 */
+.party-slots {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.party-slot {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    padding: 12px;
+    border: 2px solid transparent;
+    min-height: 140px;
+}
+
+.party-slot.filled {
+    border-color: var(--primary);
+}
+
+.party-slot.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    border: 2px dashed #444;
+}
+
+.slot-avatar {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.slot-info {
+    text-align: center;
+}
+
+.slot-name {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.slot-level {
     font-size: 0.75rem;
     color: var(--text-muted);
 }
 
-.upgrade-stats {
-    font-size: 0.75rem;
-    color: var(--success-color);
-    margin-top: 0.25rem;
+.exp-bar {
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    margin: 6px 0;
+    overflow: hidden;
 }
 
-.upgrade-btn {
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 80px;
+.exp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #ff9800);
 }
 
-.upgrade-btn:hover {
-    background: var(--secondary-color);
+.slot-stats {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 4px;
 }
 
-.upgrade-btn:disabled {
-    background: #475569;
-    cursor: not-allowed;
-    opacity: 0.7;
+.character-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-/* 実績セクション */
-.achievements-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-    gap: 0.5rem;
-}
-
-.achievement {
-    width: 60px;
-    height: 60px;
+.character-card {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 12px;
+    background: var(--bg-card);
+    padding: 12px;
+    border-radius: var(--border-radius);
+    border-left: 4px solid;
+}
+
+.card-avatar {
     font-size: 2rem;
-    background: #334155;
-    border-radius: 0.5rem;
-    opacity: 0.3;
-    transition: all 0.3s ease;
 }
 
-.achievement.unlocked {
-    opacity: 1;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    animation: unlock 0.5s ease;
+.card-info {
+    flex: 1;
 }
 
-@keyframes unlock {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
+.card-name {
+    font-weight: bold;
+    font-size: 0.9rem;
 }
 
-/* フッター */
-.game-footer {
-    background: var(--card-bg);
-    padding: 1rem;
+.card-element {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.card-level {
+    font-size: 0.8rem;
+}
+
+.card-stats {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.no-characters {
+    text-align: center;
+    padding: 32px;
+    color: var(--text-muted);
+}
+
+/* ガチャ画面 */
+.gacha-banner {
+    background: linear-gradient(135deg, var(--bg-lighter), var(--bg-card));
+    border-radius: var(--border-radius);
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 24px;
+    border: 2px solid var(--primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.gacha-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255,255,255,0.1) 50%,
+        transparent 70%
+    );
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+.banner-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg, var(--accent), var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.banner-chars {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    letter-spacing: 8px;
+}
+
+.banner-rates {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    border-top: 2px solid var(--primary-color);
+    gap: 16px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
 }
 
-.footer-btn {
-    background: #334155;
-    color: var(--text-color);
+.gacha-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.btn-gacha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
     border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s;
 }
 
-.footer-btn:hover {
-    background: #475569;
+.btn-gacha.single {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
 }
 
-.footer-btn.danger:hover {
-    background: var(--danger-color);
+.btn-gacha.ten {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
 }
 
-/* オフラインボーナス */
-.offline-bonus {
+.btn-gacha:active {
+    transform: scale(0.98);
+}
+
+.gacha-label {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.gacha-cost {
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+.gacha-bonus {
+    font-size: 0.75rem;
+    background: var(--accent);
+    color: #333;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 8px;
+}
+
+.gems-display {
+    text-align: center;
+    font-size: 1.1rem;
+    padding: 16px;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+}
+
+#gacha-results {
+    margin-top: 24px;
+}
+
+#gacha-results h3 {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.gacha-results-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.gacha-result-card {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+    border: 2px solid;
+    animation: card-appear 0.5s ease backwards;
+}
+
+@keyframes card-appear {
+    0% { transform: scale(0) rotate(180deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.result-rarity {
+    font-size: 0.6rem;
+}
+
+.result-avatar {
+    font-size: 1.5rem;
+    margin: 4px 0;
+}
+
+.result-name {
+    font-size: 0.6rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.result-element {
+    font-size: 0.8rem;
+}
+
+/* 装備画面 */
+.equipment-status {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.char-equipment {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    padding: 12px;
+}
+
+.char-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.char-avatar {
+    font-size: 1.5rem;
+}
+
+.char-name {
+    font-weight: bold;
+}
+
+.equip-slots {
+    display: flex;
+    gap: 8px;
+}
+
+.equip-slot {
+    flex: 1;
+    padding: 8px;
+    background: var(--bg-lighter);
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.equip-slot:active {
+    transform: scale(0.96);
+}
+
+.equip-slot.filled {
+    border: 1px solid var(--primary);
+}
+
+.slot-type {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+}
+
+.slot-name {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.inventory-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.inventory-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-card);
+    padding: 12px;
+    border-radius: var(--border-radius);
+    border-left: 4px solid;
+}
+
+.item-icon {
+    font-size: 1.5rem;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-name {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.item-stats {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.item-equipped {
+    font-size: 0.7rem;
+    color: var(--primary);
+}
+
+.no-items, .no-party-msg {
+    text-align: center;
+    padding: 32px;
+    color: var(--text-muted);
+}
+
+/* モーダル */
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0,0,0,0.8);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    padding: 16px;
 }
 
-.offline-content {
-    background: var(--card-bg);
-    padding: 2rem;
-    border-radius: 1rem;
-    text-align: center;
-    max-width: 90%;
-    animation: popup 0.3s ease;
+.modal-content {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    width: 100%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow: hidden;
+    animation: modal-appear 0.3s ease;
 }
 
-@keyframes popup {
-    0% { transform: scale(0.8); opacity: 0; }
+@keyframes modal-appear {
+    0% { transform: scale(0.9); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
 }
 
-.offline-content h2 {
-    margin-bottom: 1rem;
-    color: var(--warning-color);
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.offline-content p {
-    margin-bottom: 1.5rem;
-    font-size: 1.125rem;
+.modal-header h3 {
+    margin: 0;
+    font-size: 1rem;
 }
 
-#offline-gold {
-    color: var(--warning-color);
-    font-weight: bold;
-    font-size: 1.5rem;
-}
-
-#claim-bonus {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    color: white;
+.modal-close {
+    background: none;
     border: none;
-    padding: 1rem 2rem;
-    border-radius: 0.5rem;
-    font-size: 1.125rem;
-    font-weight: 600;
+    color: var(--text);
+    font-size: 1.5rem;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    padding: 4px;
 }
 
-#claim-bonus:hover {
-    transform: scale(1.05);
+.modal-body {
+    padding: 16px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-equip-item {
+    padding: 12px;
+    background: var(--bg-lighter);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.modal-equip-item:active {
+    transform: scale(0.98);
+}
+
+.modal-equip-item.equipped {
+    border: 2px solid var(--primary);
+}
+
+.equip-rarity {
+    font-size: 0.7rem;
+}
+
+.equip-name {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.equip-stats {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.equipped-badge {
+    font-size: 0.7rem;
+    color: var(--primary);
+    margin-top: 4px;
+}
+
+.no-equips {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-muted);
+}
+
+/* オフラインボーナス */
+.offline-bonus {
+    text-align: center;
+}
+
+.offline-bonus h2 {
+    border: none;
+    color: var(--accent);
+}
+
+.offline-rewards {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 24px 0;
+}
+
+.reward-item {
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 /* 通知 */
 .notification {
     position: fixed;
-    top: 1rem;
+    top: 60px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--success-color);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
+    background: var(--bg-card);
+    color: var(--text);
+    padding: 12px 24px;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    font-weight: bold;
     z-index: 1001;
-    animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s;
+    animation: notification-in 0.3s ease;
+    border: 2px solid var(--primary);
 }
 
-@keyframes slideDown {
-    0% { transform: translateX(-50%) translateY(-100%); }
-    100% { transform: translateX(-50%) translateY(0); }
+.notification.success {
+    border-color: var(--success);
 }
 
-@keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
+.notification.error {
+    border-color: var(--danger);
 }
 
-/* レスポンシブ対応 */
+.notification.fade-out {
+    animation: notification-out 0.3s ease forwards;
+}
+
+@keyframes notification-in {
+    0% { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+    100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+@keyframes notification-out {
+    0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+    100% { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+}
+
+/* レスポンシブ調整 */
 @media (max-width: 380px) {
-    .game-header h1 {
-        font-size: 1.25rem;
+    .gacha-results-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 4px;
     }
     
-    .hero, .enemy {
-        font-size: 3rem;
+    .result-avatar {
+        font-size: 1.2rem;
     }
     
-    .upgrade-item {
+    .party-slots {
+        grid-template-columns: 1fr;
+    }
+    
+    .battle-arena {
         flex-direction: column;
-        align-items: stretch;
-        gap: 0.5rem;
+        gap: 16px;
     }
     
-    .upgrade-btn {
-        width: 100%;
+    .party-side {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .party-member {
+        flex: 1 1 45%;
+    }
+    
+    .vs-divider {
+        display: none;
     }
 }
 
-/* タッチフィードバック */
-@media (hover: none) {
-    .upgrade-btn:active {
-        transform: scale(0.95);
-    }
-    
-    .footer-btn:active {
-        transform: scale(0.95);
+/* PWA対応 */
+@media (display-mode: standalone) {
+    .game-header {
+        padding-top: env(safe-area-inset-top);
     }
 }
